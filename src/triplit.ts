@@ -24,7 +24,8 @@ export const schema = {
 const idbStorage = new IndexedDbExperimentalKVStore('triplit', { batchSize: 10000 });
 const db = new DB({schema: {collections: schema}, kv:idbStorage});
 
-export async function seedTriplit(){
+export async function seedTriplit() : Promise<number>{
+  const start = performance.now();
   console.log('seeding triplit...');
   {
     const t = performance.now();
@@ -44,12 +45,16 @@ export async function seedTriplit(){
     });
     console.log(`inserting ${USERS.length} took`, performance.now() - t, 'ms');
   }
+  return Math.round(performance.now() - start);
 }
 
-export async function fetchTodosFromTriplit(){
+export async function fetchTodosFromTriplit():Promise<number>{
+  const start = performance.now();
+
   console.log('fetching from triplit...');
   const t = performance.now();
   const results = await db.fetch(db.query('todos').where('done', '=', true).build())
   console.log(`fetching ${results.length} todos took`, performance.now() - t, 'ms');
   console.log('results', results);
+  return Math.round(performance.now() - start);
 }

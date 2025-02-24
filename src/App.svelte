@@ -1,18 +1,44 @@
 <script lang="ts">
 	import { seedDexie, fetchTodosFromDexie } from './dexie';
 	import { seedTriplit, fetchTodosFromTriplit } from './triplit';
+
+	let lastDexieSeedRun: number | null = $state(null);
+	let lastTriplitSeedRun: number | null = $state(null);
+	let lastDexieFetchRun: number | null = $state(null);
+	let lastTriplitFetchRun: number | null = $state(null);
 </script>
 
 <main>
 	<div>
 		Dexie
-		<button on:click={seedDexie}>Seed Dexie</button>
-		<button on:click={fetchTodosFromDexie}>Fetch Todos from Dexie</button>
+		<button
+			onclick={async () => {
+				lastDexieSeedRun = await seedDexie();
+			}}>Seed Dexie</button
+		>
+		<div>Last run took {lastDexieSeedRun}ms</div>
+
+		<button
+			onclick={async () => {
+				lastDexieFetchRun = await fetchTodosFromDexie();
+			}}>Fetch Todos from Dexie</button
+		>
+		<div>Last run took {lastDexieFetchRun}ms</div>
 	</div>
 	<div>
 		Triplit
-		<button on:click={seedTriplit}>Seed Triplit</button>
-		<button on:click={fetchTodosFromTriplit}>Fetch Todos from Triplit</button>
+		<button
+			onclick={async () => {
+				lastTriplitSeedRun = await seedTriplit();
+			}}>Seed Triplit</button
+		>
+		<div>Last run took {lastTriplitSeedRun}ms</div>
+		<button
+			onclick={async () => {
+				lastTriplitFetchRun = await fetchTodosFromTriplit();
+			}}>Fetch Todos from Triplit</button
+		>
+		<div>Last run took {lastTriplitFetchRun}ms</div>
 	</div>
 </main>
 
